@@ -1,0 +1,17 @@
+# Ignorar caches de Python
+__pycache__/
+*.pyc
+
+# Ignorar archivos temporales de VS Code
+.vscode/
+
+# Ignorar archivos Excel sensibles
+*.xlsx
+
+# Ignorar entornos virtuales
+venv/
+.env/
+
+# Ignorar archivos del sistema
+.DS_Store
+Thumbs.db
