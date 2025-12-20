@@ -1,5 +1,11 @@
+# 1.El "Corazón" del Negocio:
+# Este módulo ya lo explicamos, pero lo importante es que no depende de nadie. Es puro cálculo matemático.
+# Lógica profesional: Usa timedelta(days=365) para proyectar el futuro. Es perfecto porque separa la fecha de hoy (datetime.now()) del dato del cliente.
+
+
 from datetime import datetime, timedelta
 
+# Ideal para tests automáticos TENERLO EN CUENTA MAS ADELANTE
 def calcular_estado(fecha_compra):
     """
     Calcula el estado del SOAT basado en la fecha de compra.
@@ -24,4 +30,5 @@ def calcular_estado(fecha_compra):
 
     else:
         return "VENCIDO", dias_restantes
+
 

@@ -1,3 +1,8 @@
+# 3.El "Cerebro Operativo":
+# Aquí conectas la tabla de datos con el cálculo.
+# for index, row in df.iterrows():: Esto recorre tu Excel fila por fila.
+# resultados.append({...}): Construye una lista de "paquetes de información" (diccionarios) que contienen todo lo necesario para que Tinlow sepa a quién llamar y qué decir.
+
 from calculo_soat import calcular_estado
 
 def generar_alertas(df):
