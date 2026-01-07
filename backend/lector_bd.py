@@ -23,22 +23,34 @@ def limpiar_telefono(tel):
 # Lectura, limpieza y cruce
 # -------------------------
 def leer_y_cruzar_bases():
-    try:
+    try:                                                                                                                                          
         # Leer archivos y hojas específicas
         banco = pd.read_excel(
-            "Base Banco completa SB Jun 2024.xlsx",
+            "../datos/Base Banco completa SB Jun 2024.xlsx",
             sheet_name="Emp_Activos 30 Jun"
         )
+        banco.columns = banco.columns.str.strip().str.upper() #Esto hace que:Colaborador, colaborador, COLABORADOR, TODOS se conviertan en COLABORADOR
 
         documental = pd.read_excel(
-            "BASE DE DATOS DOCUMENTAL PESV - 2023 (3).xlsx",
-            sheet_name="SEPTIEMBRE 2023"
+            "../datos/BASE DE DATOS DOCUMENTAL PESV - 2023 (3).xlsx",
+            sheet_name="SEPTIEMBRE 2023",
+            header=3 #arranca desde la fila 3 el encabezado en excel
+            
         )
+        documental.columns = documental.columns.str.strip().str.upper() #Esto hace que:Colaborador, colaborador, COLABORADOR, TODOS se conviertan en COLABORADOR
+
+        print("\n📌 Columnas reales en DOCUMENTAL:")
+        for col in documental.columns:
+            print(f"- '{col}'")
+
 
         # -------------------------
         # Limpieza base documental
         # -------------------------
         documental["nombre"] = documental["COLABORADOR"].str.strip()
+
+        # --- PUNTO 1: Creamos la columna limpia para el correo ---
+        documental["correo"] = documental["CORREO ELECTRONICO COLABORADOR"].str.strip().str.lower()
 
         documental["fecha_compra"] = pd.to_datetime(
             documental["FECHA SOAT"],
@@ -54,19 +66,17 @@ def leer_y_cruzar_bases():
         # -------------------------
         # Cruce por CEDULA
         # -------------------------
-        df_final = documental.merge(
-            banco[["CEDULA", "telefono"]],
-            on="CEDULA",
-            how="left"
-        )
+        df_final = documental.merge(banco[["CEDULA", "telefono"]],on="CEDULA",how="left")
 
         # -------------------------
         # Limpieza final
         # -------------------------
         df_final = df_final.dropna(subset=["fecha_compra"])
 
-        return df_final[["CEDULA", "nombre", "telefono", "fecha_compra"]]
+        return df_final[["CEDULA", "nombre", "telefono", "fecha_compra","correo"]]
 
+        
+    
     except FileNotFoundError as e:
         print("❌ Archivo Excel no encontrado:", e)
         return None
@@ -78,3 +88,6 @@ def leer_y_cruzar_bases():
     except Exception as e:
         print("❌ Error inesperado en lector_bd:", e)
         return None
+
+
+    
